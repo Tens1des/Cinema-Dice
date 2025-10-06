@@ -455,6 +455,8 @@ struct EditTitleView: View {
     private func saveChanges() {
         var updatedTitle = title
         updatedTitle.name = titleName
+        updatedTitle.type = selectedType
+        updatedTitle.genres = Array(selectedGenres)
         updatedTitle.note = note
         dataManager.updateTitle(updatedTitle)
         presentationMode.wrappedValue.dismiss()

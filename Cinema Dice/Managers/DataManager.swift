@@ -43,6 +43,9 @@ class DataManager: ObservableObject {
         achievements = Achievement.allAchievements
         loadData()
         checkAndResetMonthlyRolls()
+        
+        // Clean corrupted data on startup
+        cleanCorruptedData()
     }
     
     // MARK: - Save/Load
@@ -329,6 +332,25 @@ class DataManager: ObservableObject {
         achievements = Achievement.allAchievements
         userProfile = UserProfile()
         rollsThisMonth = 0
+        saveData()
+    }
+    
+    func cleanCorruptedData() {
+        // Remove titles with invalid names
+        titles.removeAll { title in
+            title.name.isEmpty || 
+            title.name == "ВФВФВ" || 
+            title.name == "ФВФВФВ" ||
+            title.name.count < 2
+        }
+        
+        // Clean corrupted notes
+        for i in 0..<titles.count {
+            if titles[i].note == "ФВФВФВ" || titles[i].note == "ВФВФВ" {
+                titles[i].note = ""
+            }
+        }
+        
         saveData()
     }
     

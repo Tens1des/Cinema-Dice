@@ -13,7 +13,7 @@ struct MainTabView: View {
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            LibraryView()
+            LibraryView(selectedTab: $selectedTab)
                 .tabItem {
                     Image(systemName: "film.stack")
                     Text("Library")

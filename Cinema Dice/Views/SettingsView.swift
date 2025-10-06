@@ -246,6 +246,32 @@ struct SettingsView: View {
                                 }
                             }
                             
+                            // Clean Corrupted Data
+                            Button(action: {
+                                dataManager.cleanCorruptedData()
+                            }) {
+                                HStack {
+                                    Image(systemName: "wand.and.rays")
+                                        .font(.system(size: 20))
+                                        .foregroundColor(.orange)
+                                        .frame(width: 32)
+                                    
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text("Clean Corrupted Data")
+                                            .font(.system(size: 17))
+                                            .foregroundColor(.orange)
+                                        Text("Remove titles with invalid names")
+                                            .font(.system(size: 13))
+                                            .foregroundColor(AppColors.textSecondary(dataManager.appTheme))
+                                    }
+                                    
+                                    Spacer()
+                                }
+                                .padding(16)
+                                .background(AppColors.cardBackground(dataManager.appTheme))
+                                .cornerRadius(12)
+                            }
+                            
                             // Reset All Data
                             Button(action: {
                                 showResetAlert = true

@@ -54,12 +54,18 @@ struct RollResultView: View {
                 
                 // Result Card
                 if titles.count == 1, let title = titles.first {
-                    SingleResultCard(title: title)
+                    ScrollView {
+                        SingleResultCard(title: title)
+                            .padding(.horizontal, 20)
+                    }
                 } else {
                     TabView(selection: $currentIndex) {
                         ForEach(0..<titles.count, id: \.self) { index in
-                            SingleResultCard(title: titles[index])
-                                .tag(index)
+                            ScrollView {
+                                SingleResultCard(title: titles[index])
+                                    .padding(.horizontal, 20)
+                            }
+                            .tag(index)
                         }
                     }
                     .tabViewStyle(.page(indexDisplayMode: .always))
@@ -114,19 +120,20 @@ struct SingleResultCard: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 24)
                     .fill(AppColors.cardBackground)
-                    .frame(width: 200, height: 200)
+                    .frame(width: 160, height: 160)
                 
                 Image(systemName: title.type == .film ? "film" : "tv")
-                    .font(.system(size: 80))
+                    .font(.system(size: 60))
                     .foregroundColor(AppColors.primary)
             }
             
             // Title
-            Text(title.name)
-                .font(.system(size: 28, weight: .bold))
+            Text(title.name.isEmpty ? "Unknown Title" : title.name)
+                .font(.system(size: 24, weight: .bold))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 16)
+                .lineLimit(3)
             
             Text(title.type.rawValue)
                 .font(.system(size: 15))
@@ -148,13 +155,13 @@ struct SingleResultCard: View {
             }
             
             // Note
-            if !title.note.isEmpty {
+            if !title.note.isEmpty && title.note != "ФВФВФВ" {
                 Text(title.note)
-                    .font(.system(size: 15))
+                    .font(.system(size: 14))
                     .foregroundColor(AppColors.textSecondary)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
-                    .lineLimit(3)
+                    .padding(.horizontal, 20)
+                    .lineLimit(4)
             }
             
             // Actions
@@ -175,7 +182,8 @@ struct SingleResultCard: View {
                     dataManager.toggleWatched(title.id)
                 }
             }
-            .padding(.horizontal, 32)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 20)
         }
     }
 }

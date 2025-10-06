@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LibraryView: View {
     @ObservedObject private var dataManager = DataManager.shared
+    @Binding var selectedTab: Int
     @State private var searchText = ""
     @State private var showAddTitle = false
     @State private var showFilterSheet = false
@@ -105,7 +106,7 @@ struct LibraryView: View {
                     // Roll Button
                     if !dataManager.titles.isEmpty {
                         Button(action: {
-                            // Switch to Roll tab
+                            selectedTab = 1 // Switch to Roll tab
                         }) {
                             HStack {
                                 Image(systemName: "dice.fill")
@@ -222,6 +223,14 @@ struct TitleCardView: View {
                 // Actions
                 VStack(spacing: 8) {
                     Button(action: {
+                        showEditSheet = true
+                    }) {
+                        Image(systemName: "pencil")
+                            .font(.system(size: 16))
+                            .foregroundColor(AppColors.textSecondary)
+                    }
+                    
+                    Button(action: {
                         dataManager.toggleFavorite(title.id)
                     }) {
                         Image(systemName: title.isFavorite ? "heart.fill" : "heart")
@@ -241,6 +250,16 @@ struct TitleCardView: View {
             .padding(16)
             .background(AppColors.cardBackground)
             .cornerRadius(16)
+        }
+        .buttonStyle(PlainButtonStyle())
+        .scaleEffect(showEditSheet ? 0.98 : 1.0)
+        .animation(.easeInOut(duration: 0.1), value: showEditSheet)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.clear, lineWidth: 1)
+        )
+        .onTapGesture {
+            showEditSheet = true
         }
         .sheet(isPresented: $showEditSheet) {
             EditTitleView(title: title)
@@ -328,5 +347,9 @@ struct FilterSheet: View {
             }
         }
     }
+}
+
+#Preview {
+    LibraryView(selectedTab: .constant(0))
 }
 
