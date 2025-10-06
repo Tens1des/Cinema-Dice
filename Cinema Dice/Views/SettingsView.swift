@@ -21,12 +21,12 @@ struct SettingsView: View {
                     VStack(spacing: 24) {
                         // Header
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("settings".localized())
-                                .font(.system(size: 34, weight: .bold))
-                                .foregroundColor(AppColors.text(dataManager.appTheme))
-                            Text("customize_experience".localized())
-                                .font(.system(size: 15))
-                                .foregroundColor(AppColors.textSecondary(dataManager.appTheme))
+                                Text("settings".localized())
+                                    .font(.dynamicSize(34, weight: .bold, textSize: dataManager.textSize))
+                                    .foregroundColor(AppColors.text(dataManager.appTheme))
+                                Text("customize_experience".localized())
+                                    .font(.dynamicSize(15, textSize: dataManager.textSize))
+                                    .foregroundColor(AppColors.textSecondary(dataManager.appTheme))
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
@@ -104,6 +104,57 @@ struct SettingsView: View {
                                     
                                     Image(systemName: "moon.fill")
                                         .foregroundColor(dataManager.appTheme == .dark ? AppColors.primary : AppColors.textSecondary)
+                                }
+                            }
+                            .padding(16)
+                            .background(AppColors.cardBackground(dataManager.appTheme))
+                            .cornerRadius(12)
+                            
+                            // Text Size
+                            HStack {
+                                Image(systemName: "textformat.size")
+                                    .font(.system(size: 20))
+                                    .foregroundColor(AppColors.text(dataManager.appTheme))
+                                    .frame(width: 32)
+                                
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text("text_size".localized())
+                                        .font(.system(size: 17))
+                                        .foregroundColor(AppColors.text(dataManager.appTheme))
+                                    Text("adjust_font_size".localized())
+                                        .font(.system(size: 13))
+                                        .foregroundColor(AppColors.textSecondary(dataManager.appTheme))
+                                }
+                                
+                                Spacer()
+                                
+                                Menu {
+                                    ForEach(TextSize.allCases, id: \.self) { size in
+                                        Button(action: {
+                                            dataManager.textSize = size
+                                            dataManager.saveData()
+                                        }) {
+                                            HStack {
+                                                Text(size.rawValue)
+                                                if dataManager.textSize == size {
+                                                    Image(systemName: "checkmark")
+                                                }
+                                            }
+                                        }
+                                    }
+                                } label: {
+                                    HStack(spacing: 4) {
+                                        Text(dataManager.textSize.localizedName)
+                                            .font(.system(size: 17))
+                                            .foregroundColor(AppColors.text(dataManager.appTheme))
+                                        Image(systemName: "chevron.up.chevron.down")
+                                            .font(.system(size: 12))
+                                            .foregroundColor(AppColors.textSecondary(dataManager.appTheme))
+                                    }
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 8)
+                                    .background(AppColors.cardBackground(dataManager.appTheme).opacity(0.5))
+                                    .cornerRadius(8)
                                 }
                             }
                             .padding(16)

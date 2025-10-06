@@ -19,6 +19,12 @@ class DataManager: ObservableObject {
     @Published var textSize: TextSize = .medium
     @Published var rollsThisMonth: Int = 0
     
+    // New achievement tracking
+    @Published var nightRollsCount: Int = 0
+    @Published var morningRollsCount: Int = 0
+    @Published var watchedInRowCount: Int = 0
+    @Published var contentTypesTried: Set<String> = []
+    
     private let titlesKey = "cinema_dice_titles"
     private let achievementsKey = "cinema_dice_achievements"
     private let profileKey = "cinema_dice_profile"
@@ -27,8 +33,14 @@ class DataManager: ObservableObject {
     private let textSizeKey = "cinema_dice_text_size"
     private let rollsMonthKey = "cinema_dice_rolls_month"
     private let lastMonthKey = "cinema_dice_last_month"
+    private let nightRollsKey = "cinema_dice_night_rolls"
+    private let morningRollsKey = "cinema_dice_morning_rolls"
+    private let watchedInRowKey = "cinema_dice_watched_in_row"
+    private let contentTypesKey = "cinema_dice_content_types"
     
     init() {
+        // Reset achievements to include new ones
+        achievements = Achievement.allAchievements
         loadData()
         checkAndResetMonthlyRolls()
     }
@@ -71,7 +83,17 @@ class DataManager: ObservableObject {
     private func loadAchievements() {
         if let data = UserDefaults.standard.data(forKey: achievementsKey),
            let decoded = try? JSONDecoder().decode([Achievement].self, from: data) {
-            achievements = decoded
+            
+            // Merge saved achievements with new ones
+            var mergedAchievements = Achievement.allAchievements
+            
+            for savedAchievement in decoded {
+                if let index = mergedAchievements.firstIndex(where: { $0.id == savedAchievement.id }) {
+                    mergedAchievements[index] = savedAchievement
+                }
+            }
+            
+            achievements = mergedAchievements
         }
     }
     
@@ -93,6 +115,12 @@ class DataManager: ObservableObject {
         UserDefaults.standard.set(appLanguage.rawValue, forKey: languageKey)
         UserDefaults.standard.set(textSize.rawValue, forKey: textSizeKey)
         UserDefaults.standard.set(rollsThisMonth, forKey: rollsMonthKey)
+        UserDefaults.standard.set(nightRollsCount, forKey: nightRollsKey)
+        UserDefaults.standard.set(morningRollsCount, forKey: morningRollsKey)
+        UserDefaults.standard.set(watchedInRowCount, forKey: watchedInRowKey)
+        if let encoded = try? JSONEncoder().encode(contentTypesTried) {
+            UserDefaults.standard.set(encoded, forKey: contentTypesKey)
+        }
     }
     
     private func loadSettings() {
@@ -109,6 +137,13 @@ class DataManager: ObservableObject {
             textSize = size
         }
         rollsThisMonth = UserDefaults.standard.integer(forKey: rollsMonthKey)
+        nightRollsCount = UserDefaults.standard.integer(forKey: nightRollsKey)
+        morningRollsCount = UserDefaults.standard.integer(forKey: morningRollsKey)
+        watchedInRowCount = UserDefaults.standard.integer(forKey: watchedInRowKey)
+        if let data = UserDefaults.standard.data(forKey: contentTypesKey),
+           let decoded = try? JSONDecoder().decode(Set<String>.self, from: data) {
+            contentTypesTried = decoded
+        }
     }
     
     // MARK: - Title Management
@@ -142,8 +177,18 @@ class DataManager: ObservableObject {
     
     func toggleWatched(_ titleId: UUID) {
         if let index = titles.firstIndex(where: { $0.id == titleId }) {
+            let wasWatched = titles[index].isWatched
             titles[index].isWatched.toggle()
+            
+            // Track watched in row for perfectionist achievement
+            if !wasWatched && titles[index].isWatched {
+                watchedInRowCount += 1
+            } else if wasWatched && !titles[index].isWatched {
+                watchedInRowCount = 0 // Reset if unwatched
+            }
+            
             saveTitles()
+            saveSettings()
             checkAchievements()
         }
     }
@@ -180,12 +225,26 @@ class DataManager: ObservableObject {
     
     // MARK: - Roll Management
     
-    func recordRoll() {
+    func recordRoll(contentType: String = "") {
         rollsThisMonth += 1
         userProfile.totalRolls += 1
         
-        // Update streak
+        // Track time-based achievements
         let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: Date())
+        
+        if hour >= 22 || hour <= 2 { // Night time (10 PM - 2 AM)
+            nightRollsCount += 1
+        } else if hour >= 5 && hour <= 8 { // Morning time (5 AM - 8 AM)
+            morningRollsCount += 1
+        }
+        
+        // Track content types
+        if !contentType.isEmpty {
+            contentTypesTried.insert(contentType)
+        }
+        
+        // Update streak
         if let lastRoll = userProfile.lastRollDate {
             let daysSinceLastRoll = calendar.dateComponents([.day], from: lastRoll, to: Date()).day ?? 0
             if daysSinceLastRoll == 1 {
@@ -230,6 +289,13 @@ class DataManager: ObservableObject {
         
         let genresSet = Set(titles.flatMap { $0.genres })
         updateAchievement(.genreMaster, progress: genresSet.count)
+        
+        // New achievements
+        updateAchievement(.nightOwl, progress: nightRollsCount)
+        updateAchievement(.earlyBird, progress: morningRollsCount)
+        updateAchievement(.perfectionist, progress: watchedInRowCount)
+        updateAchievement(.explorer, progress: contentTypesTried.count)
+        updateAchievement(.socialButterfly, progress: notesCount)
         
         saveAchievements()
     }

@@ -79,6 +79,8 @@ struct LocalizedString {
             "theme": "Theme",
             "dark_mode_enabled": "Dark mode is enabled",
             "light_mode_enabled": "Light mode is enabled",
+            "text_size": "Text Size",
+            "adjust_font_size": "Adjust the font size",
             "general": "GENERAL",
             "language": "Language",
             "data_management": "DATA MANAGEMENT",
@@ -96,7 +98,10 @@ struct LocalizedString {
             // Common
             "done": "Done",
             "filter_by_genre": "Filter by Genre",
-            "clear_all": "Clear All"
+            "clear_all": "Clear All",
+            "small": "Small",
+            "medium": "Medium", 
+            "large": "Large"
         ],
         
         .russian: [
@@ -169,6 +174,8 @@ struct LocalizedString {
             "theme": "Тема",
             "dark_mode_enabled": "Темная тема включена",
             "light_mode_enabled": "Светлая тема включена",
+            "text_size": "Размер текста",
+            "adjust_font_size": "Настройте размер шрифта",
             "general": "ОБЩИЕ",
             "language": "Язык",
             "data_management": "УПРАВЛЕНИЕ ДАННЫМИ",
@@ -186,7 +193,10 @@ struct LocalizedString {
             // Common
             "done": "Готово",
             "filter_by_genre": "Фильтр по жанрам",
-            "clear_all": "Очистить все"
+            "clear_all": "Очистить все",
+            "small": "Маленький",
+            "medium": "Средний",
+            "large": "Большой"
         ]
     ]
     

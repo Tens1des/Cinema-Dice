@@ -214,7 +214,7 @@ struct RollView: View {
             }
             
             // Record roll
-            dataManager.recordRoll()
+            dataManager.recordRoll(contentType: selectedContentType.rawValue)
             dataManager.unlockAchievement(.firstRoll)
             
             if numberOfResults == 3 {

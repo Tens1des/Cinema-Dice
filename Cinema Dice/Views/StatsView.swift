@@ -13,18 +13,18 @@ struct StatsView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                AppColors.background.ignoresSafeArea()
+                AppColors.background(dataManager.appTheme).ignoresSafeArea()
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         // Header
                         VStack(alignment: .leading, spacing: 8) {
                             Text("📈 Statistics")
-                                .font(.system(size: 34, weight: .bold))
-                                .foregroundColor(.white)
+                                .font(.dynamicSize(34, weight: .bold, textSize: dataManager.textSize))
+                                .foregroundColor(AppColors.text(dataManager.appTheme))
                             Text("Your cinema journey")
-                                .font(.system(size: 15))
-                                .foregroundColor(AppColors.textSecondary)
+                                .font(.dynamicSize(15, textSize: dataManager.textSize))
+                                .foregroundColor(AppColors.textSecondary(dataManager.appTheme))
                         }
                         
                         // Stats Cards
@@ -65,26 +65,26 @@ struct StatsView: View {
                         if let mostPicked = dataManager.mostPickedTitle, mostPicked.rollCount > 0 {
                             VStack(alignment: .leading, spacing: 12) {
                                 Text("Most Picked")
-                                    .font(.system(size: 20, weight: .bold))
-                                    .foregroundColor(.white)
+                                    .font(.dynamicSize(20, weight: .bold, textSize: dataManager.textSize))
+                                    .foregroundColor(AppColors.text(dataManager.appTheme))
                                 
                                 HStack(spacing: 16) {
                                     Text("🏆")
-                                        .font(.system(size: 40))
+                                        .font(.system(size: 40 * dataManager.textSize.scale))
                                     
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(mostPicked.name)
-                                            .font(.system(size: 18, weight: .semibold))
-                                            .foregroundColor(.white)
+                                            .font(.dynamicSize(18, weight: .semibold, textSize: dataManager.textSize))
+                                            .foregroundColor(AppColors.text(dataManager.appTheme))
                                         Text("Picked \(mostPicked.rollCount) times")
-                                            .font(.system(size: 14))
-                                            .foregroundColor(AppColors.textSecondary)
+                                            .font(.dynamicSize(14, textSize: dataManager.textSize))
+                                            .foregroundColor(AppColors.textSecondary(dataManager.appTheme))
                                     }
                                     
                                     Spacer()
                                 }
                                 .padding(16)
-                                .background(AppColors.cardBackground)
+                                .background(AppColors.cardBackground(dataManager.appTheme))
                                 .cornerRadius(16)
                             }
                         }
@@ -93,14 +93,14 @@ struct StatsView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             HStack {
                                 Text("Achievements")
-                                    .font(.system(size: 20, weight: .bold))
-                                    .foregroundColor(.white)
+                                    .font(.system(size: 20 * dataManager.textSize.scale, weight: .bold))
+                                    .foregroundColor(AppColors.text(dataManager.appTheme))
                                 
                                 Spacer()
                                 
                                 Text("\(dataManager.unlockedAchievementsCount)/\(dataManager.achievements.count)")
-                                    .font(.system(size: 17))
-                                    .foregroundColor(AppColors.textSecondary)
+                                    .font(.system(size: 17 * dataManager.textSize.scale))
+                                    .foregroundColor(AppColors.textSecondary(dataManager.appTheme))
                             }
                             
                             LazyVGrid(columns: [
@@ -158,39 +158,40 @@ struct StatCard: View {
 
 struct AchievementCard: View {
     let achievement: Achievement
+    @ObservedObject private var dataManager = DataManager.shared
     
     var body: some View {
         VStack(spacing: 8) {
             Text(achievement.icon)
-                .font(.system(size: 40))
+                .font(.dynamicSize(40, textSize: dataManager.textSize))
             
             Text(achievement.title)
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(.white)
+                .font(.dynamicSize(14, weight: .semibold, textSize: dataManager.textSize))
+                .foregroundColor(AppColors.text(dataManager.appTheme))
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
             
             Text(achievement.description)
-                .font(.system(size: 11))
-                .foregroundColor(AppColors.textSecondary)
+                .font(.dynamicSize(11, textSize: dataManager.textSize))
+                .foregroundColor(AppColors.textSecondary(dataManager.appTheme))
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
             
             if achievement.isUnlocked {
                 if let date = achievement.unlockedDate {
                     Text(formatDate(date))
-                        .font(.system(size: 11, weight: .medium))
+                        .font(.dynamicSize(11, weight: .medium, textSize: dataManager.textSize))
                         .foregroundColor(.green)
                 }
             } else {
                 Text(achievement.progressText)
-                    .font(.system(size: 11))
-                    .foregroundColor(AppColors.textSecondary)
+                    .font(.dynamicSize(11, textSize: dataManager.textSize))
+                    .foregroundColor(AppColors.textSecondary(dataManager.appTheme))
             }
         }
         .padding(12)
         .frame(maxWidth: .infinity)
-        .background(achievement.isUnlocked ? AppColors.cardBackground : AppColors.cardBackground.opacity(0.5))
+        .background(achievement.isUnlocked ? AppColors.cardBackground(dataManager.appTheme) : AppColors.cardBackground(dataManager.appTheme).opacity(0.5))
         .cornerRadius(16)
         .overlay(
             RoundedRectangle(cornerRadius: 16)

@@ -37,10 +37,10 @@ struct LibraryView: View {
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("My Cinema")
-                                .font(.system(size: 34, weight: .bold))
+                                .font(.dynamicSize(34, weight: .bold, textSize: dataManager.textSize))
                                 .foregroundColor(.white)
                             Text("\(unwatchedCount) unwatched titles")
-                                .font(.system(size: 15))
+                                .font(.dynamicSize(15, textSize: dataManager.textSize))
                                 .foregroundColor(AppColors.textSecondary)
                         }
                         Spacer()

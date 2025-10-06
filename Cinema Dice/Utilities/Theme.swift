@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+extension Font {
+    static func dynamicSize(_ size: CGFloat, weight: Font.Weight = .regular, textSize: TextSize = DataManager.shared.textSize) -> Font {
+        return .system(size: size * textSize.scale, weight: weight)
+    }
+}
+
 struct AppColors {
     static let background = Color(hex: "000000")
     static let backgroundLight = Color(hex: "FFFFFF")

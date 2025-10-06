@@ -58,6 +58,22 @@ enum TextSize: String, Codable, CaseIterable {
     case medium = "Medium"
     case large = "Large"
     
+    var displayName: String {
+        switch self {
+        case .small: return "Small"
+        case .medium: return "Medium"
+        case .large: return "Large"
+        }
+    }
+    
+    var localizedName: String {
+        switch self {
+        case .small: return "small".localized()
+        case .medium: return "medium".localized()
+        case .large: return "large".localized()
+        }
+    }
+    
     var scale: CGFloat {
         switch self {
         case .small: return 0.9
