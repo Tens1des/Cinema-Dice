@@ -344,27 +344,27 @@ struct ProfileEditView: View {
     
     var body: some View {
         ZStack {
-            AppColors.background.ignoresSafeArea()
+            AppColors.background(dataManager.appTheme).ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // Header with Cancel Button
+                // Header with Cancel/Save Buttons
                 HStack {
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
                     }) {
-                    Text("cancel".localized())
-                        .font(.system(size: 17))
-                        .foregroundColor(.white)
+                        Text("Cancel")
+                            .font(.system(size: 17))
+                            .foregroundColor(AppColors.text(dataManager.appTheme))
                     }
                     Spacer()
-                    Text("edit_profile".localized())
+                    Text("Edit Profile")
                         .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(.white)
+                        .foregroundColor(AppColors.text(dataManager.appTheme))
                     Spacer()
                     Button(action: saveProfile) {
-                        Text("save".localized())
+                        Text("Save")
                             .font(.system(size: 17, weight: .semibold))
-                            .foregroundColor(AppColors.primary)
+                            .foregroundColor(.red)
                     }
                 }
                 .padding(.horizontal, 20)
@@ -375,9 +375,9 @@ struct ProfileEditView: View {
                     
                     // Avatar Selection
                     VStack(spacing: 16) {
-                        Text("choose_avatar".localized())
+                        Text("Choose Avatar")
                             .font(.system(size: 17, weight: .semibold))
-                            .foregroundColor(.white)
+                            .foregroundColor(AppColors.text(dataManager.appTheme))
                         
                         LazyVGrid(columns: [
                             GridItem(.flexible()),
@@ -391,12 +391,12 @@ struct ProfileEditView: View {
                                 }) {
                                     ZStack {
                                         Circle()
-                                            .fill(selectedAvatar == avatar ? AppColors.primary : AppColors.cardBackground(dataManager.appTheme))
-                                            .frame(width: 50, height: 50)
+                                            .fill(selectedAvatar == avatar ? .red : AppColors.cardBackground(dataManager.appTheme))
+                                            .frame(width: 60, height: 60)
                                         
                                         Image(systemName: avatar)
-                                            .font(.system(size: 20, weight: .semibold))
-                                            .foregroundColor(.white)
+                                            .font(.system(size: 24, weight: .semibold))
+                                            .foregroundColor(selectedAvatar == avatar ? .white : AppColors.textSecondary(dataManager.appTheme))
                                     }
                                 }
                             }
@@ -406,13 +406,13 @@ struct ProfileEditView: View {
                     
                     // Name Input
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("name".localized())
+                        Text("Name")
                             .font(.system(size: 17, weight: .semibold))
-                            .foregroundColor(.white)
+                            .foregroundColor(AppColors.text(dataManager.appTheme))
                         
-                        TextField("enter_name".localized(), text: $name)
+                        TextField("Movie Lover", text: $name)
                             .font(.system(size: 17))
-                            .foregroundColor(.white)
+                            .foregroundColor(AppColors.text(dataManager.appTheme))
                             .padding(16)
                             .background(AppColors.cardBackground(dataManager.appTheme))
                             .cornerRadius(12)

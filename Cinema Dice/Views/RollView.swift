@@ -46,7 +46,7 @@ struct RollView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                AppColors.background.ignoresSafeArea()
+                AppColors.background(dataManager.appTheme).ignoresSafeArea()
                 
                 ScrollView {
                     VStack(spacing: 24) {
@@ -54,7 +54,7 @@ struct RollView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Roll the Dice")
                                 .font(.system(size: 34, weight: .bold))
-                                .foregroundColor(.white)
+                                .foregroundColor(AppColors.text(dataManager.appTheme))
                             Text("Configure your random pick")
                                 .font(.system(size: 15))
                                 .foregroundColor(AppColors.textSecondary)
@@ -65,7 +65,7 @@ struct RollView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Content Type")
                                 .font(.system(size: 17, weight: .semibold))
-                                .foregroundColor(.white)
+                                .foregroundColor(AppColors.text(dataManager.appTheme))
                             
                             HStack(spacing: 12) {
                                 ForEach(ContentTypeFilter.allCases, id: \.self) { type in
@@ -84,7 +84,7 @@ struct RollView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Number of Results")
                                 .font(.system(size: 17, weight: .semibold))
-                                .foregroundColor(.white)
+                                .foregroundColor(AppColors.text(dataManager.appTheme))
                             
                             HStack(spacing: 12) {
                                 ForEach([1, 2, 3], id: \.self) { number in
@@ -102,7 +102,7 @@ struct RollView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Genres & Tags")
                                 .font(.system(size: 17, weight: .semibold))
-                                .foregroundColor(.white)
+                                .foregroundColor(AppColors.text(dataManager.appTheme))
                             
                             let allGenres = Array(Set(dataManager.titles.flatMap { $0.genres })).sorted()
                             
@@ -126,16 +126,16 @@ struct RollView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Options")
                                 .font(.system(size: 17, weight: .semibold))
-                                .foregroundColor(.white)
+                                .foregroundColor(AppColors.text(dataManager.appTheme))
                             
                             Toggle(isOn: $excludeWatched) {
                                 Text("Exclude watched titles")
                                     .font(.system(size: 17))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(AppColors.text(dataManager.appTheme))
                             }
                             .tint(AppColors.primary)
                             .padding(16)
-                            .background(AppColors.cardBackground)
+                            .background(AppColors.cardBackground(dataManager.appTheme))
                             .cornerRadius(12)
                         }
                         
@@ -232,6 +232,7 @@ struct ContentTypeButton: View {
     let icon: String
     let isSelected: Bool
     let action: () -> Void
+    @ObservedObject private var dataManager = DataManager.shared
     
     var body: some View {
         Button(action: action) {
@@ -244,7 +245,7 @@ struct ContentTypeButton: View {
             .foregroundColor(isSelected ? .white : AppColors.textSecondary)
             .frame(maxWidth: .infinity)
             .frame(height: 80)
-            .background(isSelected ? AppColors.primary : AppColors.cardBackground)
+            .background(isSelected ? AppColors.primary : AppColors.cardBackground(dataManager.appTheme))
             .cornerRadius(16)
         }
     }
@@ -254,6 +255,7 @@ struct NumberButton: View {
     let number: Int
     let isSelected: Bool
     let action: () -> Void
+    @ObservedObject private var dataManager = DataManager.shared
     
     var body: some View {
         Button(action: action) {
@@ -262,7 +264,7 @@ struct NumberButton: View {
                 .foregroundColor(isSelected ? .white : AppColors.textSecondary)
                 .frame(maxWidth: .infinity)
                 .frame(height: 60)
-                .background(isSelected ? AppColors.primary : AppColors.cardBackground)
+                .background(isSelected ? AppColors.primary : AppColors.cardBackground(dataManager.appTheme))
                 .cornerRadius(16)
         }
     }

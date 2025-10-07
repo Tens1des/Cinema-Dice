@@ -15,7 +15,7 @@ struct RollResultView: View {
     
     var body: some View {
         ZStack {
-            AppColors.background.ignoresSafeArea()
+                AppColors.background(dataManager.appTheme).ignoresSafeArea()
             
             VStack(spacing: 0) {
                 // Close Button
@@ -99,7 +99,7 @@ struct RollResultView: View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .frame(height: 56)
-                            .background(AppColors.cardBackground)
+                            .background(AppColors.cardBackground(dataManager.appTheme))
                             .cornerRadius(16)
                     }
                 }
@@ -119,7 +119,7 @@ struct SingleResultCard: View {
             // Movie Icon
             ZStack {
                 RoundedRectangle(cornerRadius: 24)
-                    .fill(AppColors.cardBackground)
+                    .fill(AppColors.cardBackground(dataManager.appTheme))
                     .frame(width: 160, height: 160)
                 
                 Image(systemName: title.type == .film ? "film" : "tv")
@@ -147,7 +147,7 @@ struct SingleResultCard: View {
                             .font(.system(size: 13))
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
-                            .background(AppColors.cardBackground)
+                            .background(AppColors.cardBackground(dataManager.appTheme))
                             .foregroundColor(AppColors.textSecondary)
                             .cornerRadius(12)
                     }
@@ -193,6 +193,7 @@ struct ActionButton: View {
     let title: String
     let isActive: Bool
     let action: () -> Void
+    @ObservedObject private var dataManager = DataManager.shared
     
     var body: some View {
         Button(action: action) {
@@ -205,7 +206,7 @@ struct ActionButton: View {
             .foregroundColor(isActive ? .white : AppColors.textSecondary)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 12)
-            .background(isActive ? AppColors.primary.opacity(0.3) : AppColors.cardBackground)
+            .background(isActive ? AppColors.primary.opacity(0.3) : AppColors.cardBackground(dataManager.appTheme))
             .cornerRadius(12)
         }
     }

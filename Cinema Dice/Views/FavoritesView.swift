@@ -27,7 +27,7 @@ struct FavoritesView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                AppColors.background.ignoresSafeArea()
+                AppColors.background(dataManager.appTheme).ignoresSafeArea()
                 
                 VStack(spacing: 0) {
                     // Header
@@ -53,7 +53,7 @@ struct FavoritesView: View {
                             .foregroundColor(.white)
                     }
                     .padding(12)
-                    .background(AppColors.cardBackground)
+                    .background(AppColors.cardBackground(dataManager.appTheme))
                     .cornerRadius(12)
                     .padding(.horizontal, 20)
                     .padding(.top, 16)
@@ -136,7 +136,7 @@ struct FavoriteTitleCard: View {
                 // Icon
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(AppColors.cardBackground.opacity(0.5))
+                        .fill(AppColors.cardBackground(dataManager.appTheme).opacity(0.5))
                         .frame(width: 60, height: 60)
                     
                     Image(systemName: title.type == .film ? "film" : "tv")
@@ -162,7 +162,7 @@ struct FavoriteTitleCard: View {
                                     .font(.system(size: 12))
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 4)
-                                    .background(AppColors.cardBackground)
+                                    .background(AppColors.cardBackground(dataManager.appTheme))
                                     .foregroundColor(AppColors.textSecondary)
                                     .cornerRadius(6)
                             }
@@ -186,7 +186,7 @@ struct FavoriteTitleCard: View {
                 }
             }
             .padding(16)
-            .background(AppColors.cardBackground)
+            .background(AppColors.cardBackground(dataManager.appTheme))
             .cornerRadius(16)
         }
         .sheet(isPresented: $showEditSheet) {

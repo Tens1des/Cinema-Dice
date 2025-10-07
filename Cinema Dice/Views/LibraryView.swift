@@ -31,18 +31,18 @@ struct LibraryView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                AppColors.background.ignoresSafeArea()
+                AppColors.background(dataManager.appTheme).ignoresSafeArea()
                 
                 VStack(spacing: 0) {
                     // Header
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("My Cinema")
-                                .font(.dynamicSize(34, weight: .bold, textSize: dataManager.textSize))
-                                .foregroundColor(.white)
-                            Text("\(unwatchedCount) unwatched titles")
-                                .font(.dynamicSize(15, textSize: dataManager.textSize))
-                                .foregroundColor(AppColors.textSecondary)
+                        Text("My Cinema")
+                            .font(.dynamicSize(34, weight: .bold, textSize: dataManager.textSize))
+                            .foregroundColor(AppColors.text(dataManager.appTheme))
+                        Text("\(unwatchedCount) unwatched titles")
+                            .font(.dynamicSize(15, textSize: dataManager.textSize))
+                            .foregroundColor(AppColors.textSecondary(dataManager.appTheme))
                         }
                         Spacer()
                         
@@ -66,10 +66,10 @@ struct LibraryView: View {
                             Image(systemName: "magnifyingglass")
                                 .foregroundColor(AppColors.textSecondary)
                             TextField("Search titles...", text: $searchText)
-                                .foregroundColor(.white)
+                                .foregroundColor(AppColors.text(dataManager.appTheme))
                         }
                         .padding(12)
-                        .background(AppColors.cardBackground)
+                        .background(AppColors.cardBackground(dataManager.appTheme))
                         .cornerRadius(12)
                         
                         Button(action: {
@@ -79,7 +79,7 @@ struct LibraryView: View {
                                 .font(.system(size: 24))
                                 .foregroundColor(.white)
                                 .frame(width: 44, height: 44)
-                                .background(AppColors.cardBackground)
+                                .background(AppColors.cardBackground(dataManager.appTheme))
                                 .cornerRadius(12)
                         }
                     }
@@ -141,9 +141,9 @@ struct LibraryView: View {
                 .font(.system(size: 80))
                 .foregroundColor(AppColors.textSecondary)
             
-            Text("No titles yet")
+                            Text("No titles yet")
                 .font(.system(size: 24, weight: .bold))
-                .foregroundColor(.white)
+                .foregroundColor(AppColors.text(dataManager.appTheme))
             
             Text("Add your first movie or series\nto get started")
                 .font(.system(size: 16))
@@ -184,7 +184,7 @@ struct TitleCardView: View {
                 // Icon
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(AppColors.cardBackground)
+                        .fill(AppColors.cardBackground(dataManager.appTheme))
                         .frame(width: 60, height: 60)
                     
                     Image(systemName: title.type == .film ? "film" : "tv")
@@ -196,7 +196,7 @@ struct TitleCardView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(title.name)
                         .font(.system(size: 17, weight: .semibold))
-                        .foregroundColor(.white)
+                        .foregroundColor(AppColors.text(dataManager.appTheme))
                         .lineLimit(1)
                     
                     HStack(spacing: 8) {
@@ -210,7 +210,7 @@ struct TitleCardView: View {
                                     .font(.system(size: 12))
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 4)
-                                    .background(AppColors.cardBackground)
+                                    .background(AppColors.cardBackground(dataManager.appTheme))
                                     .foregroundColor(AppColors.textSecondary)
                                     .cornerRadius(6)
                             }
@@ -248,7 +248,7 @@ struct TitleCardView: View {
                 }
             }
             .padding(16)
-            .background(AppColors.cardBackground)
+            .background(AppColors.cardBackground(dataManager.appTheme))
             .cornerRadius(16)
         }
         .buttonStyle(PlainButtonStyle())
@@ -322,7 +322,7 @@ struct FilterSheet: View {
                                     }
                                 }
                                 .padding(16)
-                                .background(AppColors.cardBackground)
+                                .background(AppColors.cardBackground(dataManager.appTheme))
                                 .cornerRadius(12)
                             }
                         }
@@ -336,7 +336,7 @@ struct FilterSheet: View {
                                     .foregroundColor(AppColors.primary)
                                     .frame(maxWidth: .infinity)
                                     .padding(16)
-                                    .background(AppColors.cardBackground)
+                                    .background(AppColors.cardBackground(dataManager.appTheme))
                                     .cornerRadius(12)
                             }
                         }

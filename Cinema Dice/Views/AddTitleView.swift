@@ -21,7 +21,7 @@ struct AddTitleView: View {
     
     var body: some View {
         ZStack {
-            AppColors.background.ignoresSafeArea()
+            AppColors.background(dataManager.appTheme).ignoresSafeArea()
             
             VStack(spacing: 0) {
                 // Header with Close Button
@@ -61,7 +61,7 @@ struct AddTitleView: View {
                                 .font(.system(size: 17))
                                 .foregroundColor(.white)
                                 .padding(16)
-                                .background(AppColors.cardBackground)
+                                .background(AppColors.cardBackground(dataManager.appTheme))
                                 .cornerRadius(12)
                         }
                         
@@ -117,7 +117,7 @@ struct AddTitleView: View {
                                     .font(.system(size: 15))
                                     .foregroundColor(.white)
                                     .padding(12)
-                                    .background(AppColors.cardBackground)
+                                    .background(AppColors.cardBackground(dataManager.appTheme))
                                     .cornerRadius(8)
                                 
                                 Button(action: {
@@ -131,7 +131,7 @@ struct AddTitleView: View {
                                         .foregroundColor(.white)
                                         .padding(.horizontal, 20)
                                         .padding(.vertical, 12)
-                                        .background(AppColors.cardBackground)
+                                        .background(AppColors.cardBackground(dataManager.appTheme))
                                         .cornerRadius(8)
                                 }
                             }
@@ -159,7 +159,7 @@ struct AddTitleView: View {
                                     .padding(8)
                                     .scrollContentBackground(.hidden)
                             }
-                            .background(AppColors.cardBackground)
+                            .background(AppColors.cardBackground(dataManager.appTheme))
                             .cornerRadius(12)
                             
                             HStack {
@@ -180,7 +180,7 @@ struct AddTitleView: View {
                                 .fixedSize(horizontal: false, vertical: true)
                         }
                         .padding(16)
-                        .background(AppColors.cardBackground)
+                        .background(AppColors.cardBackground(dataManager.appTheme))
                         .cornerRadius(12)
                         
                         Spacer(minLength: 100)
@@ -213,7 +213,7 @@ struct AddTitleView: View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .frame(height: 56)
-                            .background(AppColors.cardBackground)
+                            .background(AppColors.cardBackground(dataManager.appTheme))
                             .cornerRadius(16)
                     }
                 }
@@ -246,6 +246,7 @@ struct TypeButton: View {
     let icon: String
     let isSelected: Bool
     let action: () -> Void
+    @ObservedObject private var dataManager = DataManager.shared
     
     var body: some View {
         Button(action: action) {
@@ -258,7 +259,7 @@ struct TypeButton: View {
             .foregroundColor(isSelected ? .white : AppColors.textSecondary)
             .frame(maxWidth: .infinity)
             .frame(height: 80)
-            .background(isSelected ? AppColors.primary : AppColors.cardBackground)
+            .background(isSelected ? AppColors.primary : AppColors.cardBackground(dataManager.appTheme))
             .cornerRadius(16)
         }
     }
@@ -268,6 +269,7 @@ struct GenreChip: View {
     let title: String
     let isSelected: Bool
     let action: () -> Void
+    @ObservedObject private var dataManager = DataManager.shared
     
     var body: some View {
         Button(action: action) {
@@ -276,7 +278,7 @@ struct GenreChip: View {
                 .foregroundColor(isSelected ? .white : AppColors.textSecondary)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
-                .background(isSelected ? AppColors.primary : AppColors.cardBackground)
+                .background(isSelected ? AppColors.primary : AppColors.cardBackground(dataManager.appTheme))
                 .cornerRadius(20)
         }
     }
@@ -347,7 +349,7 @@ struct EditTitleView: View {
     
     var body: some View {
         ZStack {
-            AppColors.background.ignoresSafeArea()
+            AppColors.background(dataManager.appTheme).ignoresSafeArea()
             
             VStack(spacing: 0) {
                 // Header with Close Button
@@ -382,7 +384,7 @@ struct EditTitleView: View {
                                 .font(.system(size: 17))
                                 .foregroundColor(.white)
                                 .padding(16)
-                                .background(AppColors.cardBackground)
+                                .background(AppColors.cardBackground(dataManager.appTheme))
                                 .cornerRadius(12)
                         }
                         
@@ -407,7 +409,7 @@ struct EditTitleView: View {
                                     .padding(8)
                                     .scrollContentBackground(.hidden)
                             }
-                            .background(AppColors.cardBackground)
+                            .background(AppColors.cardBackground(dataManager.appTheme))
                             .cornerRadius(12)
                         }
                         
@@ -436,7 +438,7 @@ struct EditTitleView: View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .frame(height: 56)
-                            .background(AppColors.cardBackground)
+                            .background(AppColors.cardBackground(dataManager.appTheme))
                             .cornerRadius(16)
                     }
                 }
